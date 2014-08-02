@@ -1,0 +1,9 @@
+{
+  "_id": "_design/date",
+  "views": {
+    "books": {
+      "map": "function(doc) {\n    if (doc.type == 'Book') {\n        emit([doc.created_at, doc._id], null);\n    }\n}"
+    }
+  },
+  "language": "javascript"
+}

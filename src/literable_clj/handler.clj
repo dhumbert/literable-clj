@@ -14,12 +14,32 @@
 (defn create-new-book [body]
   nil)
 
+(defn get-book [slug]
+  (response (model/get-book-by-slug slug)))
+
+
+(defn get-genre-books [genre]
+  (response (model/get-books-by-genre genre 5)))
+
+
+(defn get-tag-books [tag]
+  (response (model/get-books-by-tag tag 5)))
+
 
 (defroutes app-routes 
   (context "/library" [] 
     (defroutes library-routes
       (GET "/" [] (get-recent-books))
       (POST "/" {body :body} (create-new-book body))))
+  (context "/book" []
+    (defroutes book-routes
+      (GET "/:slug" [slug] (get-book slug))))
+  (context "/genre" []
+    (defroutes genre-routes
+      (GET "/:genre" [genre] (get-genre-books genre))))
+  (context "/tag" []
+    (defroutes tag-routes
+      (GET "/:tag" [tag] (get-tag-books tag))))
   (route/not-found "Not Found"))
 
 (def app

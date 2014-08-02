@@ -1,0 +1,12 @@
+{
+  "_id": "_design/list",
+  "views": {
+    "genre": {
+      	"map": "function(doc) { if (doc.type == 'Book') {for (var i = 0; i < doc.genres.length; i++) for (var j = 0; j < doc.genres[i].length; j++) { emit(doc.genres[i][j], null);}}}"
+    },
+    "tag": {
+    	"map": "function(doc) { if (doc.type == 'Book') {for (var i = 0; i < doc.tags.length; i++) { emit(doc.tags[i], null);}}}"
+    }
+  },
+  "language": "javascript"
+}

@@ -6,7 +6,8 @@
                  [ring/ring-json "0.3.1"]
                  [cheshire "5.3.1"]
                  [clj-http "0.9.2"]
-                 [environ "0.5.0"]]
+                 [environ "0.5.0"]
+                 [org.clojure/tools.logging "0.3.0"]]
   :plugins [[lein-ring "0.8.11"]]
   :ring {:handler literable-clj.handler/app}
   :profiles
