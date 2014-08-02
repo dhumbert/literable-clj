@@ -6,16 +6,16 @@
 
 
 (defn get-recent-books [limit]
-	(couchdb/get-paginated-couchdb-view "date" "books" 1 limit {:descending true :include_docs true}))
+	(couchdb/get-paginated-view "date" "books" 1 limit {:descending true :include_docs true}))
 
 
 (defn get-book-by-slug [slug]
-	(couchdb/get-couchdb-doc slug))
+	(couchdb/get-doc slug))
 
 
 (defn get-books-by-genre [genre limit]
-	(couchdb/get-paginated-couchdb-view "list" "genre" 1 limit {:include_docs true :key (cheshire/generate-string (lower-case genre))}))
+	(couchdb/get-paginated-view "list" "genre" 1 limit {:include_docs true :key (cheshire/generate-string (lower-case genre))}))
 
 
 (defn get-books-by-tag [tag limit]
-	(couchdb/get-paginated-couchdb-view "list" "tag" 1 limit {:include_docs true :key (cheshire/generate-string (lower-case tag))}))
+	(couchdb/get-paginated-view "list" "tag" 1 limit {:include_docs true :key (cheshire/generate-string (lower-case tag))}))

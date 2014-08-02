@@ -5,8 +5,8 @@
   			[environ.core :refer [env]]))
 
 
-(defn- get-couchdb-response 
-	([endpoint] (get-couchdb-response endpoint {}))
+(defn- get-response 
+	([endpoint] (get-response endpoint {}))
 	([endpoint query-params]
 		(log/warn (str (env :database-url) "/" endpoint))
 		(log/warn query-params)
@@ -15,16 +15,16 @@
 			true)))
 
 
-(defn- get-couchdb-view [design-doc view query-params]
-	(:rows (get-couchdb-response (str "_design/" design-doc "/_view/" view) query-params)))
+(defn- get-view [design-doc view query-params]
+	(:rows (get-response (str "_design/" design-doc "/_view/" view) query-params)))
 
 
 ; todo: actually implement this.
-(defn get-paginated-couchdb-view [design-doc view page limit query-params]
-	(let [docs (get-couchdb-view design-doc view query-params)] ; get one more than the limit
+(defn get-paginated-view [design-doc view page limit query-params]
+	(let [docs (get-view design-doc view query-params)] ; get one more than the limit
 		{:books (map :doc docs)
 		 :next-key (:key (last docs))}))
 
 
-(defn get-couchdb-doc [id]
-	(get-couchdb-response id))
+(defn get-doc [id]
+	(get-response id))
