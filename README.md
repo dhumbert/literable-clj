@@ -4,8 +4,9 @@ A REST application layer written in Clojure and Compojure for Literable. Uses Co
 
 ## Prerequisites
 
-* You will need [Leiningen][1] 1.7.0 or above installed.
-* Create a .lein-env file in the project directory. Example:
+You will need [Leiningen][1] 1.7.0 or above installed.
+
+Create a .lein-env file in the project directory. Example:
 
     { :database-url "https://user:pass@user.cloudant.com/database" }
 
