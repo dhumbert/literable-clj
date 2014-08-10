@@ -19,6 +19,9 @@
   (response (model/get-book-by-slug slug)))
 
 
+(defn get-genres []
+  (response (model/get-genres)))
+
 (defn get-genre-books [genre]
   (response (model/get-books-by-genre genre 5)))
 
@@ -28,15 +31,15 @@
 
 
 (defroutes app-routes 
-  (context "/library" [] 
+  (context "/recent" [] 
     (defroutes library-routes
-      (GET "/" {params :query-params} (get-recent-books (get params "page")))
-      (POST "/" {body :body} (create-new-book body))))
+      (GET "/" {params :query-params} (get-recent-books (get params "page")))))
   (context "/book" []
     (defroutes book-routes
       (GET "/:slug" [slug] (get-book slug))))
   (context "/genre" []
     (defroutes genre-routes
+      (GET "/" [] (get-genres))
       (GET "/:genre" [genre] (get-genre-books genre))))
   (context "/tag" []
     (defroutes tag-routes

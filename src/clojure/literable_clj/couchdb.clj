@@ -27,28 +27,21 @@
 			true)))
 
 
-(defn- get-view [design-doc view query-params]
-	(:rows (get-response (str "_design/" design-doc "/_view/" view) query-params)))
+(defn- get-view 
+	([design-doc view] (get-view design-doc view {}))
+	([design-doc view query-params] (:rows (get-response (str "_design/" design-doc "/_view/" view) query-params))))
 
 
 ; this is not the way you're supposed to do view-based pagination, but we have pretty small
 ; result sets, and the other way is way too complicated to be worth it for this application.
 ; see: http://guide.couchdb.org/draft/recipes.html#pagination
 (defn get-paginated-view [design-doc view page limit query-params]
-	(let [page (cond
-					(nil? page) 1
-					:else (read-string page))
+	(let [page (if (nil? page) 1 (read-string page))
 		  docs (get-view design-doc view (assoc query-params :limit (inc limit) :skip (- (* limit page) limit)))
 		  end-of-results (<= (count docs) limit)
-		  next-page (cond
-		  				end-of-results nil
-		  				:else (inc page))
-		  prev-page (cond
-		  				(= page 1) nil
-		  				:else (dec page))
-		  final-docs (cond
-		  				end-of-results docs
-		  				:else (butlast docs))]
+		  next-page (if end-of-results nil (inc page))
+		  prev-page (if	(= page 1) nil (dec page))
+		  final-docs (if end-of-results docs (butlast docs))]
 
 		  {:books (clean-docs final-docs)
 		   :next-page next-page

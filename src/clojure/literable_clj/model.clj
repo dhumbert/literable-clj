@@ -19,3 +19,7 @@
 
 (defn get-books-by-tag [tag limit]
 	(couchdb/get-paginated-view "list" "tag" 1 limit {:include_docs true :key (cheshire/generate-string (lower-case tag))}))
+
+
+(defn get-genres []
+	(:value (couchdb/get-doc "genres")))
