@@ -5,8 +5,8 @@
   			[literable-clj.couchdb :as couchdb]))
 
 
-(defn get-recent-books [limit]
-	(couchdb/get-paginated-view "date" "books" 1 limit {:descending true :include_docs true}))
+(defn get-recent-books [page limit]
+	(couchdb/get-paginated-view "date" "books" page limit {:descending true :include_docs true}))
 
 
 (defn get-book-by-slug [slug]

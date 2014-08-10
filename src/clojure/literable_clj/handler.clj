@@ -4,11 +4,12 @@
   (:require [compojure.handler :as handler]
             [ring.middleware.json :as middleware]
             [compojure.route :as route]
-            [literable-clj.model :as model]))
+            [literable-clj.model :as model]
+            [ring.middleware.cors :refer [wrap-cors]]))
 
 
-(defn get-recent-books []
-  (response (model/get-recent-books 5)))
+(defn get-recent-books [page]
+  (response (model/get-recent-books page 8)))
 
 
 (defn create-new-book [body]
@@ -29,7 +30,7 @@
 (defroutes app-routes 
   (context "/library" [] 
     (defroutes library-routes
-      (GET "/" [] (get-recent-books))
+      (GET "/" {params :query-params} (get-recent-books (get params "page")))
       (POST "/" {body :body} (create-new-book body))))
   (context "/book" []
     (defroutes book-routes
@@ -43,7 +44,8 @@
   (route/not-found "Not Found"))
 
 (def app
-  (-> (handler/api app-routes)
+  (-> (handler/api (wrap-cors app-routes :access-control-allow-origin #"http://localhost:9000"
+                       :access-control-allow-methods [:get :put :post :delete]))
       (middleware/wrap-json-body)
       (middleware/wrap-json-response)))
 
